@@ -136,8 +136,10 @@ defmodule Absinthe.Plug do
   """
   @spec call(Plug.Conn.t, map) :: Plug.Conn.t | no_return
   def call(conn, %{json_codec: json_codec} = config) do
+    IO.puts("I'm pluggin' thats fresh and cool")
     {conn, result} = conn |> execute(config)
-
+    IO.puts("result:")
+    IO.inspect(result)
     case result do
       {:input_error, msg} ->
         conn
