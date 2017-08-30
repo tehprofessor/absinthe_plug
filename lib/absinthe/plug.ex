@@ -138,9 +138,14 @@ defmodule Absinthe.Plug do
   def call(conn, %{json_codec: json_codec} = config) do
     IO.puts("I'm pluggin' thats fresh and cool")
     {conn, result} = conn |> execute(config)
-    IO.puts("result:")
-    IO.inspect(result)
+
     case result do
+      {:ok, %{errors: %{code: _}} = result} ->
+        IO.puts("Thar be errs 'ere")
+        code = Map.get(List.first(result.errors), :code)
+        conn
+        |> send_resp(code, result)
+
       {:input_error, msg} ->
         conn
         |> send_resp(400, msg)
