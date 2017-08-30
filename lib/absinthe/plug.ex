@@ -152,8 +152,9 @@ defmodule Absinthe.Plug do
   """
   @spec call(Plug.Conn.t, map) :: Plug.Conn.t | no_return
   def call(conn, config) do
+    IO.puts("I'm plugging it")
     {conn, result} = conn |> execute(config)
-
+    IO.puts("Result, #{result}")
     case result do
       {:input_error, msg} ->
         conn
