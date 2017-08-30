@@ -140,11 +140,11 @@ defmodule Absinthe.Plug do
     {conn, result} = conn |> execute(config)
 
     case result do
-      {:ok, %{errors: %{code: _}} = result} ->
+      {:ok, %{errors: [%{code: _}]} = result} ->
         IO.puts("Thar be errs 'ere")
         code = Map.get(List.first(result.errors), :code)
         conn
-        |> send_resp(code, result)
+        |> json(code, result, json_codec)
 
       {:input_error, msg} ->
         conn
